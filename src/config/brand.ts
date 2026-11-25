@@ -17,9 +17,12 @@ export const brand = {
   social: {
     facebook: "https://www.facebook.com/",
     instagram: "https://www.instagram.com/",
+    linkedin: "https://www.linkedin.com/",
+    youtube: "https://www.youtube.com/",
   },
   location: {
-    label: "Location",
+    label: "Ranebennur",
+    lines: ["Ranebennur", "Karnataka"],
     href: "https://share.google/3rlC4V3lEMUbpo1Q5",
   },
   phones: {
@@ -52,6 +55,7 @@ export const brand = {
     cart: "ranebennur-cart",
     wishlist: "ranebennur-wishlist",
     currency: "ranebennur-currency",
+    newsletter: "ranebennur-newsletter",
   },
 } as const
 
