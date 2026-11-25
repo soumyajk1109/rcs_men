@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+:root {
+  --paper: #f3eee6;
+  --ink: #221f1c;
+}
+
+@theme inline {
+  --color-paper: #f3eee6;
+  --color-paper-deep: #e6dfd4;
+  --color-ink: #221f1c;
+  --color-muted: #5e5852;
+  --color-line: #d9d1c6;
+  --color-accent: #8d3a3a;
+  --font-sans: var(--font-sans-face);
+  --font-display: var(--font-display-face);
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans-face), sans-serif;
+}
+
+a,
+button,
+select,
+label {
+  transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
+}
+
+button:not(:disabled),
+a,
+select,
+label {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  z-index: 70;
+  transform: translateY(-150%);
+  background: var(--paper);
+  color: var(--ink);
+  padding: 0.5rem 0.75rem;
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes slide-right {
+  from {
+    transform: translateX(12px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes slide-left {
+  from {
+    transform: translateX(-12px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .drawer-right {
+    animation: slide-right 180ms ease-out;
+  }
+
+  .drawer-left {
+    animation: slide-left 180ms ease-out;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
