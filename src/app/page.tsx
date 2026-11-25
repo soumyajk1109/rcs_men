@@ -22,6 +22,7 @@ export default function HomePage() {
                   alt={category.imageAlt}
                   priority={index === 0}
                   sizes="(min-width: 1024px) 25vw, 50vw"
+                  pop
                 />
                 <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/75 to-transparent p-3 text-paper">
                   <span className="block font-display text-2xl font-semibold uppercase leading-none md:text-3xl">
@@ -47,7 +48,7 @@ export default function HomePage() {
         <ul className="mt-4 grid grid-cols-2 gap-x-3 gap-y-8 lg:grid-cols-4">
           {arrivals.map((product, index) => (
             <li key={product.id}>
-              <ProductCard product={product} priority={index < 2} />
+              <ProductCard product={product} priority={index < 2} pop />
             </li>
           ))}
         </ul>

@@ -18,6 +18,14 @@ export const brand = {
     facebook: "https://www.facebook.com/",
     instagram: "https://www.instagram.com/",
   },
+  location: {
+    label: "Location",
+    href: "https://share.google/3rlC4V3lEMUbpo1Q5",
+  },
+  phones: {
+    header: "+919901150458",
+    footer: "+919448867882",
+  },
   slides: [
     {
       eyebrow: "Season 01",

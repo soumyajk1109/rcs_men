@@ -7,7 +7,15 @@ import { useStore } from "@/lib/store"
 import { Price } from "@/components/price"
 import { ProductImage } from "@/components/product-image"
 
-export function ProductCard({ product, priority = false }: { product: Product; priority?: boolean }) {
+export function ProductCard({
+  product,
+  priority = false,
+  pop = false,
+}: {
+  product: Product
+  priority?: boolean
+  pop?: boolean
+}) {
   const { isWishlisted, toggleWishlist } = useStore()
   const saved = isWishlisted(product.id)
   const image = product.colours[0]?.images[0]
@@ -19,7 +27,7 @@ export function ProductCard({ product, priority = false }: { product: Product; p
     <article className="group">
       <div className="relative">
         <Link href={`/product/${product.slug}`} className="block">
-          <ProductImage src={image.src} alt={image.alt} priority={priority} />
+          <ProductImage src={image.src} alt={image.alt} priority={priority} pop={pop} />
         </Link>
         <button
           type="button"

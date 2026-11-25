@@ -154,7 +154,7 @@ export function Catalog({ categorySlug }: { categorySlug: string | null }) {
           <ul className="grid grid-cols-2 gap-x-3 gap-y-8 lg:grid-cols-3">
             {results.map((product, index) => (
               <li key={product.id}>
-                <ProductCard product={product} priority={index < 2} />
+                <ProductCard product={product} priority={index < 2} pop />
               </li>
             ))}
           </ul>

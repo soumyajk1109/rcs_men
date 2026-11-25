@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
+import { ChevronDown } from "lucide-react"
+import { brand } from "@/config/brand"
 import { categories } from "@/data/products"
 import { useStore } from "@/lib/store"
 import { CartView } from "@/components/cart-view"
@@ -19,6 +21,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchValue, setSearchValue] = useState("")
   const [noticeOpen, setNoticeOpen] = useState(false)
+  const [mensOpen, setMensOpen] = useState(false)
 
   useEffect(() => {
     if (previousPath.current === pathname) return
@@ -27,6 +30,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
     setSearchOpen(false)
     setCartOpen(false)
     setNoticeOpen(false)
+    setMensOpen(false)
   }, [pathname, setCartOpen])
 
   function submitSearch(value: string) {
@@ -77,18 +81,29 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
               </button>
             </div>
           </form>
-          {categories.map((category) => (
-            <Link
-              key={category.slug}
-              href={`/collections/${category.slug}`}
-              className="px-2 py-3 text-sm"
-            >
-              {category.name}
-            </Link>
-          ))}
-          <Link href="/collections" className="px-2 py-3 text-sm">
-            All products
-          </Link>
+          <button
+            type="button"
+            className="flex items-center justify-between px-2 py-3 text-left text-sm"
+            aria-expanded={mensOpen}
+            onClick={() => setMensOpen((open) => !open)}
+          >
+            Men&apos;s
+            <ChevronDown aria-hidden="true" size={16} className={mensOpen ? "rotate-180" : undefined} />
+          </button>
+          {mensOpen
+            ? categories.map((category) => (
+                <Link
+                  key={category.slug}
+                  href={`/collections/${category.slug}`}
+                  className="px-5 py-2.5 text-sm"
+                >
+                  {category.name}
+                </Link>
+              ))
+            : null}
+          <a href={`tel:${brand.phones.header}`} className="px-2 py-3 text-sm">
+            Contact us
+          </a>
           <Link href="/wishlist" className="px-2 py-3 text-sm">
             Wishlist
           </Link>

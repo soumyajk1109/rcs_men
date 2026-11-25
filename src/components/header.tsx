@@ -1,22 +1,15 @@
 "use client"
 
+import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Heart, Menu, Search, ShoppingBag } from "lucide-react"
+import { ChevronDown, Heart, Menu, Search, ShoppingBag } from "lucide-react"
 import { brand } from "@/config/brand"
 import { categories } from "@/data/products"
 import { cn } from "@/lib/cn"
 import { currencies, setCurrency, useCurrency, type CurrencyCode } from "@/lib/currency"
 import { useStore } from "@/lib/store"
-
-const links = [
-  ...categories.map((category) => ({
-    href: `/collections/${category.slug}`,
-    label: category.name,
-  })),
-  { href: "/collections", label: "All" },
-]
 
 export function Header({
   menuOpen,
@@ -33,6 +26,32 @@ export function Header({
   const currency = useCurrency()
   const { cartCount, wishlistCount } = useStore()
   const [lead, ...rest] = brand.wordmark.split(" ")
+  const mensRef = useRef<HTMLDivElement>(null)
+  const [mensPinned, setMensPinned] = useState(false)
+  const [mensHovered, setMensHovered] = useState(false)
+  const mensOpen = mensPinned || mensHovered
+  const [menuPath, setMenuPath] = useState(pathname)
+  if (menuPath !== pathname) {
+    setMenuPath(pathname)
+    setMensPinned(false)
+    setMensHovered(false)
+  }
+
+  useEffect(() => {
+    if (!mensPinned) return
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") setMensPinned(false)
+    }
+    function onPointer(event: PointerEvent) {
+      if (!mensRef.current?.contains(event.target as Node)) setMensPinned(false)
+    }
+    document.addEventListener("keydown", onKey)
+    document.addEventListener("pointerdown", onPointer)
+    return () => {
+      document.removeEventListener("keydown", onKey)
+      document.removeEventListener("pointerdown", onPointer)
+    }
+  }, [mensPinned])
 
   return (
     <header className="sticky top-0 z-40">
@@ -97,7 +116,7 @@ export function Header({
           className="flex min-w-0 items-center gap-2"
         >
           <Image
-            src="/brand/rcs-mark.png"
+            src="/brand/rcs-mark-gold.png"
             alt=""
             width={96}
             height={60}
@@ -113,23 +132,56 @@ export function Header({
           </span>
         </Link>
         </div>
-        <nav aria-label="Categories" className="hidden items-center justify-center gap-6 lg:flex">
-          {links.map((link) => {
-            const active = link.href === "/collections" ? pathname === "/collections" : pathname.startsWith(link.href)
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                aria-current={active ? "page" : undefined}
-                className={cn(
-                  "text-sm text-paper/90 hover:text-paper",
-                  active && "text-paper underline decoration-accent decoration-2 underline-offset-8",
-                )}
-              >
-                {link.label}
-              </Link>
-            )
-          })}
+        <nav aria-label="Categories" className="hidden items-center justify-center gap-8 lg:flex">
+          <div
+            ref={mensRef}
+            className="relative"
+            onMouseEnter={() => setMensHovered(true)}
+            onMouseLeave={() => setMensHovered(false)}
+          >
+            <button
+              type="button"
+              className={cn(
+                "flex items-center gap-1 py-2 text-sm text-paper/90 hover:text-paper",
+                pathname.startsWith("/collections") &&
+                  "text-paper underline decoration-accent decoration-2 underline-offset-8",
+              )}
+              aria-expanded={mensOpen}
+              aria-controls="mens-menu"
+              onClick={() => setMensPinned((open) => !open)}
+            >
+              Men&apos;s
+              <ChevronDown aria-hidden="true" size={16} className={cn(mensOpen && "rotate-180")} />
+            </button>
+            <div className={cn("absolute left-1/2 top-full z-50 -translate-x-1/2 pt-2", !mensOpen && "hidden")}>
+              <div id="mens-menu" className="min-w-52 border border-paper/15 bg-ink py-2 shadow-lg">
+                {categories.map((category) => {
+                  const href = `/collections/${category.slug}`
+                  const active = pathname.startsWith(href)
+                  return (
+                    <Link
+                      key={category.slug}
+                      href={href}
+                      aria-current={active ? "page" : undefined}
+                      onClick={() => {
+                        setMensPinned(false)
+                        setMensHovered(false)
+                      }}
+                      className={cn(
+                        "block px-4 py-2.5 text-sm text-paper/90 hover:bg-paper/10 hover:text-paper",
+                        active && "text-paper",
+                      )}
+                    >
+                      {category.name}
+                    </Link>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+          <a href={`tel:${brand.phones.header}`} className="py-2 text-sm text-paper/90 hover:text-paper">
+            Contact us
+          </a>
         </nav>
         <div className="flex items-center justify-end">
         <button type="button" className="grid size-11 place-items-center" aria-label="Search" onClick={onSearch}>
