@@ -4,6 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { searchProducts } from "@/lib/catalog"
+import { useContent } from "@/components/content-provider"
 import { plural } from "@/lib/format"
 import { ProductCard } from "@/components/product-card"
 
@@ -43,8 +44,9 @@ function SearchForm({ initial }: { initial: string }) {
 
 export function SearchResults() {
   const params = useSearchParams()
+  const { products, categories } = useContent()
   const query = params.get("q") ?? ""
-  const results = searchProducts(query)
+  const results = searchProducts(products, categories, query)
   const trimmed = query.trim()
 
   return (

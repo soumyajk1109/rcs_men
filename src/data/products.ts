@@ -35,11 +35,9 @@ export type Product = {
   createdAt: string
 }
 
-export type CategorySlug =
-  | "oversized-t-shirts"
-  | "shirts"
-  | "co-ord-sets"
-  | "outerwear"
+export type Audience = "men" | "women" | "kids"
+
+export type CategorySlug = string
 
 export type Category = {
   slug: CategorySlug
@@ -47,6 +45,7 @@ export type Category = {
   blurb: string
   image: string
   imageAlt: string
+  audience: Audience
 }
 
 const labels = ["S", "M", "L", "XL", "XXL"] as const
@@ -67,6 +66,7 @@ export const categories: Category[] = [
     blurb: "Dropped shoulders and long hems.",
     image: "/images/tee-charcoal.jpg",
     imageAlt: "Man in a charcoal oversized t-shirt and tan shorts.",
+    audience: "men",
   },
   {
     slug: "shirts",
@@ -74,6 +74,7 @@ export const categories: Category[] = [
     blurb: "Checks, camp collars, and overshirts.",
     image: "/images/shirt-brick.jpg",
     imageAlt: "Man in a black, white, and red check shirt against a brick wall.",
+    audience: "men",
   },
   {
     slug: "co-ord-sets",
@@ -81,6 +82,7 @@ export const categories: Category[] = [
     blurb: "Matching tops and bottoms in one cloth.",
     image: "/images/coord-ivory.jpg",
     imageAlt: "Man in an ivory linen shirt and matching shorts.",
+    audience: "men",
   },
   {
     slug: "outerwear",
@@ -88,8 +90,117 @@ export const categories: Category[] = [
     blurb: "Coats, jackets, and a heavier layer.",
     image: "/images/jacket-black.jpg",
     imageAlt: "Man in a black hooded jacket on a city street.",
+    audience: "men",
+  },
+  {
+    slug: "jeans",
+    name: "Jeans",
+    blurb: "Washed denim in a straight and relaxed leg.",
+    image: "/images/men-jeans.jpg",
+    imageAlt: "Stack of folded blue jeans.",
+    audience: "men",
+  },
+  {
+    slug: "ethnic-sets",
+    name: "Ethnic sets",
+    blurb: "Kurtas paired with a matching bottom.",
+    image: "/images/men-ethnic.jpg",
+    imageAlt: "Man in a brown kurta and white trousers.",
+    audience: "men",
+  },
+  {
+    slug: "formal-shirts",
+    name: "Formal shirts",
+    blurb: "Crisp shirts for work and evenings.",
+    image: "/images/shirt-sky.jpg",
+    imageAlt: "Man in a light blue formal shirt with a jacket over his shoulder.",
+    audience: "men",
+  },
+  {
+    slug: "street-wear",
+    name: "Street wear",
+    blurb: "Tees, cargos, and everyday layers.",
+    image: "/images/tee-white.jpg",
+    imageAlt: "Man in a white graphic t-shirt, olive cargo shorts, and sneakers.",
+    audience: "men",
+  },
+  {
+    slug: "dresses",
+    name: "Dresses",
+    blurb: "Evening and day dresses cut to move.",
+    image: "/images/women-gown.jpg",
+    imageAlt: "Woman in a blue evening gown and matching coat, walking in a studio.",
+    audience: "women",
+  },
+  {
+    slug: "women-shirts",
+    name: "Shirts",
+    blurb: "Shirt dresses and easy woven tops.",
+    image: "/images/women-shirt.jpg",
+    imageAlt: "Woman in a blue and white striped shirt dress against a white wall.",
+    audience: "women",
+  },
+  {
+    slug: "denim",
+    name: "Denim",
+    blurb: "Jackets and jeans with a worn-in hand.",
+    image: "/images/women-jacket.jpg",
+    imageAlt: "Woman in a denim jacket and mustard top against a yellow wall.",
+    audience: "women",
+  },
+  {
+    slug: "knitwear",
+    name: "Knitwear",
+    blurb: "Sweaters, skirts, and layered knits.",
+    image: "/images/women-knit.jpg",
+    imageAlt: "Woman in a pale knit sweater, checked skirt, and long coat.",
+    audience: "women",
+  },
+  {
+    slug: "kurta-sets",
+    name: "Kurta sets",
+    blurb: "Kurtas with a trouser and dupatta.",
+    image: "/images/women-kurta.jpg",
+    imageAlt: "Woman seated in a navy kurta set with a grey dupatta.",
+    audience: "women",
+  },
+  {
+    slug: "sarees",
+    name: "Sarees",
+    blurb: "Draped sarees for the day and the evening.",
+    image: "/images/women-saree.jpg",
+    imageAlt: "Woman in a red saree with her hair over one shoulder.",
+    audience: "women",
+  },
+  {
+    slug: "women-jeans",
+    name: "Jeans",
+    blurb: "Wide-leg and straight denim.",
+    image: "/images/hero-jeans-wide.jpg",
+    imageAlt: "Woman in wide-leg baggy jeans standing between two payphones.",
+    audience: "women",
+  },
+  {
+    slug: "kids-dresses",
+    name: "Dresses",
+    blurb: "Soft dresses for play and outings.",
+    image: "/images/kids-dresses.jpg",
+    imageAlt: "Two children in dresses playing with wooden toys.",
+    audience: "kids",
+  },
+  {
+    slug: "kids-sets",
+    name: "Sets",
+    blurb: "Tees, dresses, and matching bottoms.",
+    image: "/images/kids-sets.jpg",
+    imageAlt: "A girl in a printed dress and a boy in a striped set, standing in a studio.",
+    audience: "kids",
   },
 ]
+
+export function categoriesFor(audience: Audience) {
+  return categories.filter((category) => category.audience === audience)
+}
 
 const cottonCare = [
   "Machine wash cold with similar colours.",
@@ -491,6 +602,141 @@ export const products: Product[] = [
           },
         ],
         sizes: sizes([3, 4, 2, 1, 0]),
+      },
+    ],
+  },
+  {
+    id: "studio-gown",
+    slug: "studio-gown",
+    name: "Studio Gown",
+    category: "dresses",
+    price: 4590,
+    description: "Pleated evening gown with a soft coat in the same blue.",
+    fabric: "Chiffon with a lined bodice.",
+    care: cottonCare,
+    newArrival: true,
+    sortOrder: 13,
+    createdAt: "2026-11-18",
+    colours: [
+      {
+        id: "blue",
+        name: "Blue",
+        hex: "#6e86c9",
+        images: [
+          {
+            src: "/images/women-gown.jpg",
+            alt: "Woman in a blue evening gown and matching coat, walking in a studio.",
+          },
+        ],
+        sizes: sizes([1, 3, 2, 1, 0]),
+      },
+    ],
+  },
+  {
+    id: "stripe-shirt-dress",
+    slug: "stripe-shirt-dress",
+    name: "Stripe Shirt Dress",
+    category: "women-shirts",
+    price: 2290,
+    description: "Belted shirt dress in a blue and white stripe.",
+    fabric: "Cotton poplin.",
+    care: cottonCare,
+    newArrival: true,
+    sortOrder: 14,
+    createdAt: "2026-11-16",
+    colours: [
+      {
+        id: "stripe",
+        name: "Stripe",
+        hex: "#8eb4d4",
+        images: [
+          {
+            src: "/images/women-shirt.jpg",
+            alt: "Woman in a blue and white striped shirt dress against a white wall.",
+          },
+        ],
+        sizes: sizes([2, 4, 3, 1, 0]),
+      },
+    ],
+  },
+  {
+    id: "navy-kurta-set",
+    slug: "navy-kurta-set",
+    name: "Navy Kurta Set",
+    category: "kurta-sets",
+    price: 3490,
+    description: "Navy kurta with a straight trouser and a grey dupatta.",
+    fabric: "Cotton silk.",
+    care: cottonCare,
+    newArrival: true,
+    sortOrder: 15,
+    createdAt: "2026-11-20",
+    colours: [
+      {
+        id: "navy",
+        name: "Navy",
+        hex: "#1d2a56",
+        images: [
+          {
+            src: "/images/women-kurta.jpg",
+            alt: "Woman seated in a navy kurta set with a grey dupatta.",
+          },
+        ],
+        sizes: sizes([1, 3, 3, 2, 0]),
+      },
+    ],
+  },
+  {
+    id: "anchor-set",
+    slug: "anchor-set",
+    name: "Anchor Set",
+    category: "kids-sets",
+    price: 1690,
+    description: "Printed dress and a striped tee with joggers, cut for children.",
+    fabric: "Cotton jersey.",
+    care: cottonCare,
+    newArrival: true,
+    sortOrder: 16,
+    createdAt: "2026-11-14",
+    colours: [
+      {
+        id: "navy",
+        name: "Navy",
+        hex: "#1c2740",
+        images: [
+          {
+            src: "/images/kids-sets.jpg",
+            alt: "A girl in a printed dress and a boy in a striped set, standing in a studio.",
+          },
+        ],
+        sizes: sizes([2, 4, 3, 1, 0]),
+      },
+    ],
+  },
+  {
+    id: "play-dress",
+    slug: "play-dress",
+    name: "Play Dress",
+    category: "kids-dresses",
+    price: 1490,
+    description: "Soft day dresses with room to move.",
+    fabric: "Cotton.",
+    care: cottonCare,
+    newArrival: true,
+    sortOrder: 17,
+    createdAt: "2026-11-15",
+    colours: [
+      {
+        id: "berry",
+        name: "Berry",
+        hex: "#8d3040",
+        images: [
+          {
+            src: "/images/kids-dresses.jpg",
+            alt: "Two children in dresses playing with wooden toys.",
+          },
+        ],
+        sizes: sizes([2, 3, 2, 1, 0]),
       },
     ],
   },

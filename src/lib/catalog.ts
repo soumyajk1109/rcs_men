@@ -1,8 +1,4 @@
-import {
-  products,
-  getCategory,
-  type Product,
-} from "@/data/products"
+import { type Category, type Product } from "@/data/products"
 
 export const priceBands = [
   { id: "under-1499", label: "Under ₹1,499", min: 0, max: 1498 },
@@ -108,12 +104,12 @@ export function colourChoices(list: Product[]) {
   return [...seen.values()]
 }
 
-export function searchProducts(query: string) {
+export function searchProducts(list: Product[], categoryList: Category[], query: string) {
   const needle = query.trim().toLowerCase()
   if (!needle) return []
-  return products
+  return list
     .filter((product) => {
-      const category = getCategory(product.category)
+      const category = categoryList.find((item) => item.slug === product.category)
       const haystack = [product.name, category?.name ?? "", product.category]
         .join(" ")
         .toLowerCase()

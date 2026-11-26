@@ -3,7 +3,8 @@
 import { useState } from "react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { SlidersHorizontal } from "lucide-react"
-import { getCategory, productsInCategory } from "@/data/products"
+import type { Audience } from "@/data/products"
+import { useContent } from "@/components/content-provider"
 import {
   applyFilters,
   colourChoices,
@@ -23,11 +24,22 @@ export function CatalogFallback() {
 }
 
 export function Catalog({ categorySlug }: { categorySlug: string | null }) {
-  const category = categorySlug ? getCategory(categorySlug) : undefined
-  const source = productsInCategory(categorySlug)
+  const { categories, products } = useContent()
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
+  const audienceParam = searchParams.get("audience")
+  const audience: Audience | null =
+    audienceParam === "men" || audienceParam === "women" || audienceParam === "kids" ? audienceParam : null
+  const category = categorySlug ? categories.find((item) => item.slug === categorySlug) : undefined
+  const audienceSlugs = audience
+    ? new Set(categories.filter((item) => item.audience === audience).map((item) => item.slug))
+    : null
+  const source = categorySlug
+    ? products.filter((product) => product.category === categorySlug)
+    : audienceSlugs
+      ? products.filter((product) => audienceSlugs.has(product.category))
+      : products
   const filters = parseFilters(searchParams)
   const results = applyFilters(source, filters)
   const colours = colourChoices(source)
@@ -90,7 +102,8 @@ export function Catalog({ categorySlug }: { categorySlug: string | null }) {
     onClear: clearFilters,
   }
 
-  const title = category?.name ?? "All products"
+  const audienceTitle = audience === "men" ? "Men's" : audience === "women" ? "Women's" : audience === "kids" ? "Kid's" : null
+  const title = category?.name ?? (audienceTitle ? `All ${audienceTitle}` : "All products")
   const countLabel = plural(results.length, "product")
 
   return (
