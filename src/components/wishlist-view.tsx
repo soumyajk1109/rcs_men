@@ -1,14 +1,15 @@
 "use client"
 
 import Link from "next/link"
-import { getProductById } from "@/data/products"
+import { useContent } from "@/components/content-provider"
 import { useStore } from "@/lib/store"
 import { ProductCard } from "@/components/product-card"
 
 export function WishlistView() {
+  const { products } = useContent()
   const { wishlistIds } = useStore()
   const saved = wishlistIds
-    .map((id) => getProductById(id))
+    .map((id) => products.find((product) => product.id === id))
     .filter((product) => product !== undefined)
 
   return (

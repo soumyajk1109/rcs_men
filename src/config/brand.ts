@@ -29,13 +29,13 @@ export const brand = {
     header: "+919901150458",
     footer: "+919448867882",
   },
+  whatsappMessage: "Hello, I have a query.",
   announcements: [
     { text: "Worldwide delivery via DHL" },
     { text: "Summer Sale discount upto 50%!", cta: "Shop now", href: "/collections" },
   ],
   slides: [
     {
-      eyebrow: "Season 01",
       title: "Oversized",
       text: "A boxy tee with a dropped shoulder, cut to hang loose.",
       cta: "Shop oversized t-shirts",
@@ -43,9 +43,9 @@ export const brand = {
       image: "/images/hero-tee-wide.jpg",
       imageAlt:
         "Man in a black t-shirt and light blue jeans standing in a wide studio frame.",
+      imagePosition: "center 30%",
     },
     {
-      eyebrow: "Season 01",
       title: "Baggy denim",
       text: "Wide-leg jeans with a full break over the shoe.",
       cta: "Shop the edit",
@@ -53,6 +53,7 @@ export const brand = {
       image: "/images/hero-jeans-wide.jpg",
       imageAlt:
         "Woman in wide-leg baggy jeans standing between two payphones on a city street.",
+      imagePosition: "center 18%",
     },
   ],
   storageKeys: {

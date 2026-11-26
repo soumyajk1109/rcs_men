@@ -1,7 +1,8 @@
 import type { Metadata } from "next"
-import { brand } from "@/config/brand"
+import { Suspense } from "react"
 import { InfoPage } from "@/components/info-page"
 import { formatPhone } from "@/lib/format"
+import { getContent } from "@/lib/content-store"
 
 export const metadata: Metadata = {
   title: "Contact us",
@@ -9,6 +10,15 @@ export const metadata: Metadata = {
 }
 
 export default function ContactPage() {
+  return (
+    <Suspense fallback={<p className="px-4 py-10 text-sm">Loading contact details.</p>}>
+      <ContactBody />
+    </Suspense>
+  )
+}
+
+async function ContactBody() {
+  const { brand } = await getContent()
   return (
     <InfoPage title="Contact us">
       <p>

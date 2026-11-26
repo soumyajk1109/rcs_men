@@ -9,7 +9,8 @@ import {
   useSyncExternalStore,
 } from "react"
 import { brand } from "@/config/brand"
-import { colourById, getProductById, type Product } from "@/data/products"
+import { colourById, type Product } from "@/data/products"
+import { getLiveProductById } from "@/lib/live-catalog"
 
 export type CartLine = {
   productId: string
@@ -108,7 +109,7 @@ function writeState(next: PersistedState) {
 }
 
 function stockFor(productId: string, colourId: string, size: string) {
-  const product = getProductById(productId)
+  const product = getLiveProductById(productId)
   if (!product) return 0
   const colour = colourById(product, colourId)
   if (!colour || colour.id !== colourId) return 0
@@ -120,14 +121,14 @@ function sameLine(a: CartLine, b: Pick<CartLine, "productId" | "colourId" | "siz
 }
 
 export function lineLabel(line: CartLine) {
-  const product = getProductById(line.productId)
+  const product = getLiveProductById(line.productId)
   if (!product) return "Item"
   const colour = product.colours.find((item) => item.id === line.colourId)
   return `${product.name}, ${colour?.name ?? line.colourId}, size ${line.size}`
 }
 
 export function lineProduct(line: CartLine): Product | undefined {
-  return getProductById(line.productId)
+  return getLiveProductById(line.productId)
 }
 
 export function StoreProvider({ children }: { children: React.ReactNode }) {
@@ -185,7 +186,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
 
   const cartCount = lines.reduce((sum, line) => sum + line.quantity, 0)
   const subtotal = lines.reduce((sum, line) => {
-    const product = getProductById(line.productId)
+    const product = getLiveProductById(line.productId)
     return sum + (product ? product.price * line.quantity : 0)
   }, 0)
 

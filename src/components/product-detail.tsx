@@ -3,7 +3,8 @@
 import { useState } from "react"
 import Link from "next/link"
 import { Heart } from "lucide-react"
-import { colourById, getCategory, type Product } from "@/data/products"
+import { colourById, type Product } from "@/data/products"
+import { useContent } from "@/components/content-provider"
 import { getSizeGuide } from "@/data/size-guides"
 import { useStore } from "@/lib/store"
 import { Dialog } from "@/components/dialog"
@@ -19,6 +20,7 @@ export function ProductDetail({
   product: Product
   related: Product[]
 }) {
+  const categoryName = useContent().categories.find((item) => item.slug === product.category)?.name
   const { addItem, setCartOpen, isWishlisted, toggleWishlist } = useStore()
   const [colourId, setColourId] = useState(product.colours[0]?.id ?? "")
   const [size, setSize] = useState<string | null>(null)
@@ -61,7 +63,7 @@ export function ProductDetail({
     <div className="mx-auto max-w-[1440px] px-4 py-6 md:px-8 md:py-8">
       <p className="text-sm text-muted">
         <Link href={`/collections/${product.category}`} className="underline decoration-accent decoration-2 underline-offset-4">
-          {getCategory(product.category)?.name}
+          {categoryName}
         </Link>
       </p>
       <div className="mt-4 grid gap-8 lg:grid-cols-2 lg:gap-12">

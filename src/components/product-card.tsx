@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { Heart } from "lucide-react"
 import { isProductSoldOut, type Product } from "@/data/products"
+import { cn } from "@/lib/cn"
 import { useStore } from "@/lib/store"
 import { Price } from "@/components/price"
 import { ProductImage } from "@/components/product-image"
@@ -11,10 +12,12 @@ export function ProductCard({
   product,
   priority = false,
   pop = false,
+  smooth = false,
 }: {
   product: Product
   priority?: boolean
   pop?: boolean
+  smooth?: boolean
 }) {
   const { isWishlisted, toggleWishlist } = useStore()
   const saved = isWishlisted(product.id)
@@ -25,7 +28,7 @@ export function ProductCard({
 
   return (
     <article className="group">
-      <div className="relative">
+      <div className={cn("relative", smooth && "overflow-hidden rounded-xl")}>
         <Link href={`/product/${product.slug}`} className="block">
           <ProductImage src={image.src} alt={image.alt} priority={priority} pop={pop} />
         </Link>

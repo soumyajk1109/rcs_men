@@ -1,7 +1,8 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { Suspense } from "react"
-import { categories, getCategory } from "@/data/products"
+import { categories } from "@/data/products"
+import { getContent } from "@/lib/content-store"
 import { Catalog, CatalogFallback } from "@/components/catalog"
 
 export function generateStaticParams() {
@@ -14,7 +15,8 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
-  const category = getCategory(slug)
+  const content = await getContent()
+  const category = content.categories.find((item) => item.slug === slug)
   if (!category) return { title: "Collection" }
   return {
     title: category.name,
@@ -36,7 +38,8 @@ export default function CollectionPage({
 
 async function CollectionRoute({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const category = getCategory(slug)
+  const content = await getContent()
+  const category = content.categories.find((item) => item.slug === slug)
   if (!category) notFound()
   return <Catalog categorySlug={category.slug} />
 }
