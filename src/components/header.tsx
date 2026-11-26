@@ -69,7 +69,7 @@ export function Header({
   return (
     <header className="sticky top-0 z-40">
       <div className="border-b border-line bg-paper">
-        <div className="mx-auto grid h-11 max-w-[1440px] grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 px-3 md:px-8">
+        <div className="mx-auto grid min-h-11 max-w-[1440px] grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 px-3 py-1 md:px-8">
           <div className="flex items-center text-[#e10600]">
             <a
               href={brand.social.facebook}
@@ -95,7 +95,7 @@ export function Header({
             </a>
           </div>
           <p
-            className="flex min-w-0 items-center justify-center gap-1.5 text-sm font-semibold leading-none text-[#e10600] sm:text-base"
+            className="flex min-w-0 items-center justify-center gap-1.5 text-center text-sm font-semibold leading-tight text-[#e10600] sm:text-base"
             aria-live="polite"
           >
             <span className="grid size-8 shrink-0 place-items-center" aria-hidden="true">
@@ -124,7 +124,7 @@ export function Header({
                 </g>
               </svg>
             </span>
-            <span className="truncate">
+            <span className="min-w-0 text-balance">
               {announcement.text}
               {announcement.cta && announcement.href ? (
                 <>
