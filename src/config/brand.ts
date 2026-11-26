@@ -29,6 +29,10 @@ export const brand = {
     header: "+919901150458",
     footer: "+919448867882",
   },
+  announcements: [
+    { text: "Worldwide delivery via DHL" },
+    { text: "Summer Sale discount upto 50%!", cta: "Shop now", href: "/collections" },
+  ],
   slides: [
     {
       eyebrow: "Season 01",
